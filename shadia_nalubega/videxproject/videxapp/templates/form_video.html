@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:860px; margin:0 auto; padding:32px 24px;">
+  <h2 style="font-size:22px; font-weight:600; margin-bottom:24px;">Upload your video</h2>
+
+  {% if success %}
+  <div class="success-banner" id="success-banner">
+    <span>Video added successfully</span>
+    <button type="button" onclick="this.parentElement.style.display='none'">&#x2715;</button>
+  </div>
+  {% endif %}
+ 
+  <form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    <div class="form-grid">
+
+      <!-- Left column -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+
+        <div>
+          {{ form.title }}
+          {% if form.title.errors %}
+            <p class="error-msg">{{ form.title.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div>
+          {{ form.description }}
+        </div>
+
+        <div>
+          {{ form.quality }}
+          {% if form.quality.errors %}
+            <p class="error-msg">{{ form.quality.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div>
+          {{ form.date_of_publishing }}
+          {% if form.date_of_publishing.errors %}
+            <p class="error-msg">{{ form.date_of_publishing.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <!-- Right column -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+
+        <div>
+          <div class="upload-box {% if form.video_file.errors %}is-invalid{% endif %}"
+               style="height:160px;"
+               onclick="document.getElementById('inp-video').click()">
+            <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#aaa" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+            </svg>
+            <span id="lbl-video">Upload video</span>
+          </div>
+          {{ form.video_file }}
+          {% if form.video_file.errors %}
+            <p class="error-msg">{{ form.video_file.errors.0 }}</p>
+          {% endif %}
+        </div>
+ 
+        <div>
+          <div class="upload-box {% if form.thumbnail.errors %}is-invalid{% endif %}"
+               style="height:130px;"
+               onclick="document.getElementById('inp-thumb').click()">
+            <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="#aaa" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+            </svg>
+            <span id="lbl-thumb">Upload Thumbnail</span>
+          </div>
+          {{ form.thumbnail }}
+          {% if form.thumbnail.errors %}
+            <p class="error-msg">{{ form.thumbnail.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+
+    <button type="submit" class="btn-red"
+            style="width:100%; padding:14px; font-size:15px; margin-top:20px;">
+      UPLOAD
+    </button>
+  </form>
+</div>
+
+<script>
+  document.getElementById('inp-video').addEventListener('change', function () {
+    if (this.files.length) {
+      const name = this.files[0].name;
+      document.getElementById('lbl-video').textContent = name.length > 24 ? name.slice(0, 22) + '…' : name;
+    }
+  });
+
+  document.getElementById('inp-thumb').addEventListener('change', function () {
+    if (this.files.length) {
+      const name = this.files[0].name;
+      document.getElementById('lbl-thumb').textContent = name.length > 24 ? name.slice(0, 22) + '…' : name;
+    }
+  });
+
+  window.addEventListener('DOMContentLoaded', function () {
+    var titleField = document.querySelector('[name="title"]');
+    var qualityField = document.querySelector('[name="quality"]');
+    var dateField = document.querySelector('[name="date_of_publishing"]');
+
+    if (titleField && titleField.value === '') titleField.classList.add('is-invalid');
+    if (qualityField && qualityField.value === '') qualityField.classList.add('is-invalid');
+    if (dateField && dateField.value === '') dateField.classList.add('is-invalid');
+  });
+</script>
+{% endblock %}

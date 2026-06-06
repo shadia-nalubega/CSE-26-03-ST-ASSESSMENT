@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- This is the landing page -->
+<div style="display:flex; align-items:center; justify-content:center; min-height:100vh;">
+  <div style="text-align:center;">
+    <div style="display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:48px;">
+      <svg width="52" height="52" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="24" fill="#e8001c"/>
+        <polygon points="19,14 38,24 19,34" fill="white"/>
+      </svg>
+      <span style="font-size:48px; font-weight:700; color:#e8001c;">Videx</span>
+    </div>
+    <a href="{% url 'video_list' %}">
+      <button class="btn-outline-red">JOIN</button>
+    </a>
+  </div>
+</div>
+{% endblock %}
+
